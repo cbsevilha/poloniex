@@ -1,7 +1,8 @@
 dependencies:
   override:
     - gem install mdl
-    - pip install flake8
+    # Disable sudo once CircleCI is not bugged anymore
+    - sudo pip install flake8
 
 test:
   override:
