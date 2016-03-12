@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Poloniex Stuff</title>
+</head>
+
+<body>
+
+<script src="https://d26b395fwzu5fz.cloudfront.net/3.4.0/keen.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+var client = new Keen({
+    projectId: "56e34dd3672e6c52217970f0",
+    readKey: "1a7bd917d9dc46ee853b3dd4abfb4a6b2b3d2976ce6b5659fdeb9f9e5a4676686bd26da4c1c6d22a231753632100e705fc070e233e6136c07440f7534cfd6135df515e1a4686660ce9076a80d4cadcb85fe793a79242a076db32ad8f577439c1",
+});
+
+Keen.ready(function(){
+
+    var query = new Keen.Query("average", {
+        event_collection: "lending-rates",
+        timeframe: "last_6_hours",
+        interval: "minutely",
+        target_property: "min-big-offer"
+    });
+
+    var chart = client.draw(query, document.getElementById("chart-wrapper"), {
+        title: "Lending rates",
+        width: 1000,
+        height: 1000,
+        chartType: "linechart"
+    });
+
+});
+</script>
+
+<div id="chart-wrapper" height="1000"></canvas>
+
+</body>
+
+</html>
