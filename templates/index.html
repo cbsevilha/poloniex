@@ -15,26 +15,64 @@ var client = new Keen({
     readKey: "1a7bd917d9dc46ee853b3dd4abfb4a6b2b3d2976ce6b5659fdeb9f9e5a4676686bd26da4c1c6d22a231753632100e705fc070e233e6136c07440f7534cfd6135df515e1a4686660ce9076a80d4cadcb85fe793a79242a076db32ad8f577439c1",
 });
 
+var method = "average";
+var event_collection = "lending-rates";
+var timeframe = "last_12_hours";
+var interval = "minutely";
+
 Keen.ready(function(){
 
-    var query = new Keen.Query("average", {
-        event_collection: "lending-rates",
-        timeframe: "last_6_hours",
-        interval: "minutely",
+    var query = new Keen.Query(method, {
+        event_collection: event_collection,
+        timeframe: timeframe,
+        interval: interval,
         target_property: "min-big-offer"
     });
 
-    var chart = client.draw(query, document.getElementById("chart-wrapper"), {
-        title: "Lending rates",
+    var chart = client.draw(query, document.getElementById("min-big-offer"), {
+        title: "Minimum Big Offer",
         width: 1000,
-        height: 1000,
-        chartType: "linechart"
+        height: 300,
+        chartType: "linechart",
+        interpolateNulls: true,
+    });
+
+    var query = new Keen.Query(method, {
+        event_collection: event_collection,
+        timeframe: timeframe,
+        interval: interval,
+        target_property: "min-offer"
+    });
+
+    var chart = client.draw(query, document.getElementById("min-offer"), {
+        title: "Minimum Offer",
+        width: 1000,
+        height: 300,
+        chartType: "linechart",
+        interpolateNulls: true,
+    });
+
+    var query = new Keen.Query(method, {
+        event_collection: event_collection,
+        timeframe: timeframe,
+        interval: interval,
+        target_property: "max-demand"
+    });
+
+    var chart = client.draw(query, document.getElementById("max-demand"), {
+        title: "Maximum Demand",
+        width: 1000,
+        height: 300,
+        chartType: "linechart",
+        interpolateNulls: true,
     });
 
 });
 </script>
 
-<div id="chart-wrapper" height="1000"></canvas>
+<div id="min-big-offer"></div>
+<div id="min-offer"></div>
+<div id="max-demand"></div>
 
 </body>
 
