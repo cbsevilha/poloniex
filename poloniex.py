@@ -29,7 +29,8 @@ class Poloniex(object):
         """
         Args:
             min_amount (float): Minimum amount of BTC offered. If not offer is
-                                proposing the given amount, returns None
+                                proposing the given amount, returns the
+                                maximum known offer.
         Returns:
             float: The minimum loan rate offered for BTC, or None if no offer
                    is providing min_amount BTC.
@@ -42,14 +43,21 @@ class Poloniex(object):
 
         offer_rates = set()
 
+        # Filter the offers based on the min_amount, if any
         for offer in data['offers']:
-            rate = float(offer['rate'])
             if float(offer['amount']) >= min_amount:
+                rate = float(offer['rate'])
                 offer_rates.add(rate)
 
+        # If we have valid offers, get the lowest one
         if offer_rates:
             min_offer = min(offer_rates)
+        # If we have no valid offer, get the largest unfiltered offer, as the
+        # API won't let us get more offers
         else:
-            min_offer = None
+            for offer in data['offers']:
+                rate = float(offer['rate'])
+                offer_rates.add(rate)
+            min_offer = max(offer_rates)
 
         return min_offer
