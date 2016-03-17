@@ -16,7 +16,7 @@ import keen
 from poloniex import Poloniex
 
 
-BTC_PER_BIG_OFFER = 10
+BTC_PER_BIG_OFFER = 10.0
 DEBUG = False
 
 
